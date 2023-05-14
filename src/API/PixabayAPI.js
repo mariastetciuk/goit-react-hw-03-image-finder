@@ -12,6 +12,6 @@ export async function fetchImgs(page, quevery) {
   };
 
   return await axios.get(
-    `${BASE_URL}?key=${API_KEY}&image_type=${BASE_SEARCH_PARAMS.image_type}&orientation=${BASE_SEARCH_PARAMS.orientation}&per_page=${BASE_SEARCH_PARAMS.per_page}&q=${quevery}&page=${page}&safesearch=${BASE_SEARCH_PARAMS.safesearch}`
+    `${BASE_URL}?key=${API_KEY}&image_type=photo&orientation=horizontal&per_page=12&q=${quevery}&page=${page}&safesearch=${BASE_SEARCH_PARAMS.safesearch}`
   );
 }
