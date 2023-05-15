@@ -1,4 +1,5 @@
 import { ImageGalleryItem } from 'components/ImageGalleryItem/ImageGalleryItem';
+import PropTypes from 'prop-types';
 import css from './ImageGallery.module.css';
 
 export function ImageGallery({ gallery, alt }) {
@@ -18,3 +19,12 @@ export function ImageGallery({ gallery, alt }) {
     </ul>
   );
 }
+
+ImageGallery.propTypes = {
+  alt: PropTypes.string.isRequired,
+  // gallery: PropTypes.arrayOf(
+  //   PropTypes.exact({
+  //     key: PropTypes.string.isRequired,
+  //   })
+  // ),
+};

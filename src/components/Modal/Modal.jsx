@@ -1,4 +1,5 @@
 import { Component } from 'react';
+import PropTypes from 'prop-types';
 import css from './Modal.module.css';
 
 export class Modal extends Component {
@@ -23,13 +24,19 @@ export class Modal extends Component {
   };
 
   render() {
-    const { largeURl, description } = this.props;
+    const { largeURL, description } = this.props;
     return (
       <div className={css.overlay} onClick={this.handleOverlayClick}>
         <div className={css.modal}>
-          <img src={largeURl} alt={description} />
+          <img src={largeURL} alt={description} />
         </div>
       </div>
     );
   }
 }
+
+Modal.propTypes = {
+  largeURL: PropTypes.string.isRequired,
+  description: PropTypes.string.isRequired,
+  closeModal: PropTypes.func.isRequired,
+};

@@ -3,7 +3,7 @@ import { fetchImgs } from '../API/PixabayAPI';
 import { Searchbar } from './Searchbar/Searchbar';
 import { ImageGallery } from './ImageGallery/ImageGallery';
 import { Button } from './Button/Button';
-import { LineWave } from 'react-loader-spinner';
+import { Loader } from './Loader/Loader';
 import { Notify } from 'notiflix/build/notiflix-notify-aio';
 import css from './App.module.css';
 
@@ -17,38 +17,34 @@ export class App extends Component {
   };
 
   handleSearch = searchQuery => {
-    this.setState({ searchQuery });
+    if (this.state.searchQuery === searchQuery) {
+      return alert(
+        `You are watching "${searchQuery}" category. Enter a different category`
+      );
+    }
+
+    this.setState({ searchQuery, gallery: [], page: 1 });
   };
 
   async componentDidUpdate(prevProps, prevState) {
     const { page, searchQuery, gallery } = this.state;
 
-    const { data } = await fetchImgs(page, searchQuery);
-
-    if (prevState.searchQuery !== searchQuery) {
+    if (prevState.searchQuery !== searchQuery || prevState.page !== page) {
       try {
-        this.setState({ isLoader: true, gallery: [...data.hits] });
-
-        if (data.hits.length >= 12 && data.total !== 0) {
-          this.setState({ showBtn: true });
-        }
-
+        this.setState({ isLoader: true });
+        const { data } = await fetchImgs(page, searchQuery);
         if (data.hits.length === 0) {
           return Notify.failure('Sorry, but nothing found');
         }
-      } catch (error) {
-        console.log(error);
-      } finally {
-        this.setState({ isLoader: false });
-      }
-    }
 
-    if (prevState.page !== page && prevState.searchQuery === searchQuery) {
-      try {
-        this.setState({ gallery: [...gallery, ...data.hits], isLoader: true });
-        if (data.hits.length >= 12 && data.total - page * 12 >= 0) {
+        if (
+          (data.total > data.hits.length && data.total - page * 12 >= 0) ||
+          gallery.length === 0
+        ) {
           this.setState({ showBtn: true });
         }
+
+        this.setState({ gallery: [...gallery, ...data.hits] });
       } catch (error) {
         console.log(error);
       } finally {
@@ -76,9 +72,9 @@ export class App extends Component {
           <ImageGallery gallery={gallery} alt={searchQuery} />
         )}
 
-        {isLoader && <LineWave />}
+        {isLoader && <Loader />}
 
-        {showBtn && <Button onCkick={this.handleClickButton} />}
+        {showBtn && <Button onClick={this.handleClickButton} />}
       </div>
     );
   }
