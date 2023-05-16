@@ -22,9 +22,9 @@ export function ImageGallery({ gallery, alt }) {
 
 ImageGallery.propTypes = {
   alt: PropTypes.string.isRequired,
-  // gallery: PropTypes.arrayOf(
-  //   PropTypes.exact({
-  //     key: PropTypes.string.isRequired,
-  //   })
-  // ),
+  gallery: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.number.isRequired,
+    })
+  ),
 };
